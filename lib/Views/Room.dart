@@ -1,14 +1,17 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:mobile_app/Elements/Button.dart';
 import 'package:mobile_app/Functions/IconRating.dart';
 import 'package:mobile_app/Functions/Sequencer.dart';
 import 'package:mobile_app/Painter/ImagePainter.dart';
+import 'dart:ui' as ui;
 
 class Room extends StatefulWidget {
   final imageTag;
@@ -41,7 +44,7 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
   void initState() {
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-            _animationController.forward();
+    _animationController.forward();
     super.initState();
   }
 
@@ -73,12 +76,13 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
                         isComplex: true,
                         painter: ImagePainter(
                             image: widget.image,
-                            height: widget.image.height.toDouble(),
-                            width: widget.image.width.toDouble(),
+                            height: 768.0,
+                            width: 1080.0,
                             xCoordinate: xCoordinate.value),
                       );
                     },
-                  )),
+                  )
+                  ),
             ),
           ),
           SafeArea(
