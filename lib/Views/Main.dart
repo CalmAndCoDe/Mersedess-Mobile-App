@@ -6,6 +6,7 @@ import 'package:mobile_app/Bloc/Main.dart';
 import 'package:mobile_app/Elements/AppBar.dart';
 import 'package:mobile_app/Elements/BottomNavbar.dart';
 import 'package:mobile_app/Elements/MainSlider.dart';
+import 'package:mobile_app/Views/BookMarks.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -15,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   var appbar = CustomAppBar.getInstance();
   var menuSelected = ValueNotifier('home');
-  var roomsFetch = RoomsFetch.instance();
+  var roomsFetch = MainFetch.instance();
   PageStorageBucket _bucket = PageStorageBucket();
   PageStorageKey firstPage = PageStorageKey('MainPage');
   PageStorageKey secondPage = PageStorageKey('BookmarksPage');
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     _menuController = PageController(initialPage: 0, keepPage: true);
+    roomsFetch.roomsEvents.add(Rooms.Fetch);
     _menuAnimationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     appbar.menuController = _menuAnimationController;
@@ -70,12 +72,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   MainSlider(
                     key: firstPage,
                   ),
-                  Container(
-                    key: secondPage,
-                    child: Center(
-                      child: Text('Bookmarks'),
-                    ),
-                  )
+                  Bookmarks()
                 ],
               ),
             ),

@@ -8,7 +8,7 @@ import 'dart:ui' as ui;
 
 enum Rooms { Fetch }
 
-class RoomsFetch {
+class MainFetch {
   dynamic rooms = null;
   BuildContext context;
 
@@ -30,12 +30,12 @@ class RoomsFetch {
     roomsState.close();
   }
 
-  RoomsFetch() {
+  MainFetch() {
     roomsEvents.stream.listen(_mapEventToState);
   }
 
-  static final _getInstance = RoomsFetch();
-  factory RoomsFetch.instance() {
+  static final _getInstance = MainFetch();
+  factory MainFetch.instance() {
     return _getInstance;
   }
 

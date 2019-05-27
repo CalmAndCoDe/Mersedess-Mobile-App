@@ -7,7 +7,6 @@ import 'package:mobile_app/Views/LockScreen.dart';
 import 'package:mobile_app/Views/Login.dart';
 import 'package:mobile_app/Views/Main.dart';
 import 'package:mobile_app/Views/Signup.dart';
-import 'package:mobile_app/main.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -51,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             // change to snapshot.data for disable development mode
-            if (true) {
+            if (snapshot.data) {
               // User logged in
               //TODO: implement app authentication
               return FutureBuilder(

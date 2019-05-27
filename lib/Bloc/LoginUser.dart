@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 enum Done {UserCreate}
+enum Error{AuthenticationError}
 
 class LoginUser {
   bool isUserLoggedIn = false;
@@ -52,15 +54,19 @@ class LoginUser {
         isUserLoggedIn = true;
         if (event.shouldSaveToken) {
           FlutterSecureStorage().write(key: 'login', value: 'true');
+          var token = jsonDecode(res);
           FlutterSecureStorage().write(
             key: 'access_token',
-            value: res,
+            value: token['token']
           );
         }
       }
     } else if(event is Done){
       print(event);
       isUserLoggedIn = true;
+    }else if(event is Error) {
+      FlutterSecureStorage().deleteAll();
+      isUserLoggedIn = false;
     }
     loginState.add(isUserLoggedIn);
   }

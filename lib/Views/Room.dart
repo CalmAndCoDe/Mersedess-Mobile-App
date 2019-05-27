@@ -1,25 +1,32 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:mobile_app/Bloc/Main.dart';
+import 'package:mobile_app/Bloc/Rooms.dart';
 import 'package:mobile_app/Elements/Button.dart';
 import 'package:mobile_app/Functions/IconRating.dart';
 import 'package:mobile_app/Functions/Sequencer.dart';
 import 'package:mobile_app/Painter/ImagePainter.dart';
-import 'dart:ui' as ui;
+import 'dart:convert';
 
 class Room extends StatefulWidget {
   final imageTag;
   final textTag;
   final details;
   final image;
+  final Deserialzer roomDetails;
 
-  const Room({Key key, this.imageTag, this.details, this.image, this.textTag})
+  const Room(
+      {Key key,
+      this.imageTag,
+      this.details,
+      this.image,
+      this.textTag,
+      this.roomDetails})
       : super(key: key);
 
   @override
@@ -32,6 +39,7 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
   bool fullScreen = false;
   var fullScreenState = ValueNotifier(false);
   var xCoordinate = ValueNotifier(0.0);
+  var roomsFetch = MainFetch.instance();
   ImageInfo imageInfo;
   AnimationController _animationController;
   StreamSubscription _streamSubscription;
@@ -81,8 +89,7 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
                             xCoordinate: xCoordinate.value),
                       );
                     },
-                  )
-                  ),
+                  )),
             ),
           ),
           SafeArea(
@@ -159,31 +166,44 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
                                     Row(
                                       children: <Widget>[
                                         Text(
-                                          'Suit Room',
+                                          widget.roomDetails.title,
                                           style: TextStyle(
                                               fontFamily: 'Open Sans Condensed',
                                               fontSize: 24,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                          '200\$',
+                                          'Rooms: ${widget.roomDetails.rooms}',
                                           style: TextStyle(
-                                              fontFamily:
-                                                  'Open Sans Condensed'),
+                                            fontFamily: 'Open Sans Condensed',
+                                          ),
                                         )
                                       ],
                                     ),
-                                    IconRate().rate(context, 3, 16)
+                                    IconRate().rate(
+                                        context, widget.roomDetails.rooms, 16)
                                   ],
                                 ),
-                                Button(
-                                  height: 30,
-                                  width: 80,
-                                  child: Text(
-                                    'BOOK',
-                                    style: TextStyle(
-                                        color:
-                                            Theme.of(context).backgroundColor),
+                                InkWell(
+                                  onTap: () async {
+                                    var res = await GetRooms()
+                                        .reserve(widget.roomDetails.id);
+                                    // remove the room from fetched rooms array
+                                    roomsFetch.rooms.removeWhere((room) =>
+                                        room.id == widget.roomDetails.id);
+                                    roomsFetch.roomsEvents.add(Rooms.Fetch);
+                                    if (res == 'done')
+                                      Navigator.of(context).pop(context);
+                                  },
+                                  child: Button(
+                                    height: 30,
+                                    width: 80,
+                                    child: Text(
+                                      'BOOK',
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .backgroundColor),
+                                    ),
                                   ),
                                 )
                               ],
@@ -206,7 +226,7 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
                           width: MediaQuery.of(context).size.width - 50,
                           color: Colors.white.withOpacity(.8),
                           child: Text(
-                            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book...',
+                            widget.roomDetails.details,
                             textAlign: TextAlign.center,
                           ),
                         ),
