@@ -112,7 +112,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               children: <Widget>[
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 32.0),
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).backgroundColor,
                   child: Column(
                     children: <Widget>[
                       StreamBuilder(

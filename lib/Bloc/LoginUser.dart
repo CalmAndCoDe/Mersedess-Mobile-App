@@ -4,8 +4,8 @@ import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-enum Done {UserCreate}
-enum Error{AuthenticationError}
+enum Done { UserCreate }
+enum Error { AuthenticationError }
 
 class LoginUser {
   bool isUserLoggedIn = false;
@@ -52,19 +52,17 @@ class LoginUser {
         loginErrors = "Empty Fields";
       } else {
         isUserLoggedIn = true;
+        var token = jsonDecode(res);
+        FlutterSecureStorage()
+            .write(key: 'access_token', value: token['token']);
         if (event.shouldSaveToken) {
           FlutterSecureStorage().write(key: 'login', value: 'true');
-          var token = jsonDecode(res);
-          FlutterSecureStorage().write(
-            key: 'access_token',
-            value: token['token']
-          );
         }
       }
-    } else if(event is Done){
+    } else if (event is Done) {
       print(event);
       isUserLoggedIn = true;
-    }else if(event is Error) {
+    } else if (event is Error) {
       FlutterSecureStorage().deleteAll();
       isUserLoggedIn = false;
     }
@@ -81,14 +79,14 @@ class AutheticateUser {
 
   loginUser() async {
     if (credentials['username'] != null && credentials['password'] != null) {
-      var res = await post('https://mersedess-beta.herokuapp.com/api/login', body: {
-        'username': credentials['username'],
-        'password': credentials['password']
-      }).catchError((err) => 'error');
+      var res = await post('https://mersedess-beta.herokuapp.com/api/login',
+          body: {
+            'username': credentials['username'],
+            'password': credentials['password']
+          }).catchError((err) => 'error');
       return res == 'error' ? 'error' : res.body;
     } else {
       return 'Not Valid';
     }
   }
 }
-

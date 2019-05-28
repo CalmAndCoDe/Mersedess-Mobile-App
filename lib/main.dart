@@ -41,7 +41,9 @@ class _MainScreenState extends State<MainScreen> {
           } else {
             return MaterialApp(
               theme: ThemeData.dark(),
-              home: Center(child: CircularProgressIndicator()),
+              home: Center(
+                child: Text('Error Detected Please Contact The Developer'),
+              ),
             );
           }
         });

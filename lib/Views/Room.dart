@@ -152,7 +152,7 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
                       child: Container(
                           height: 80,
                           width: MediaQuery.of(context).size.width - 50,
-                          color: Colors.white.withOpacity(.8),
+                          color: Theme.of(context).backgroundColor.withOpacity(.5),
                           child: Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 12.0),
@@ -184,7 +184,7 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
                                         context, widget.roomDetails.rooms, 16)
                                   ],
                                 ),
-                                InkWell(
+                                Button(
                                   onTap: () async {
                                     var res = await GetRooms()
                                         .reserve(widget.roomDetails.id);
@@ -195,15 +195,13 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
                                     if (res == 'done')
                                       Navigator.of(context).pop(context);
                                   },
-                                  child: Button(
-                                    height: 30,
-                                    width: 80,
-                                    child: Text(
-                                      'BOOK',
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .backgroundColor),
-                                    ),
+                                  height: 30,
+                                  width: 80,
+                                  child: Text(
+                                    'BOOK',
+                                    style: TextStyle(
+                                        color:
+                                            Theme.of(context).backgroundColor),
                                   ),
                                 )
                               ],
@@ -224,7 +222,7 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
                         child: Container(
                           padding: EdgeInsets.all(16.0),
                           width: MediaQuery.of(context).size.width - 50,
-                          color: Colors.white.withOpacity(.8),
+                          color: Theme.of(context).backgroundColor.withOpacity(.5),
                           child: Text(
                             widget.roomDetails.details,
                             textAlign: TextAlign.center,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Elements/MenuButton.dart';
 import 'package:mobile_app/Elements/UserProfile.dart';
+import 'package:mobile_app/Views/ProfileSettings.dart';
 
 class CustomAppBar {
   var _toggled = ValueNotifier(false);
@@ -9,6 +10,7 @@ class CustomAppBar {
   set menuController(AnimationController _controller) {
     _menuController = _controller;
   }
+
   get menuState => _toggled;
 
   appBar(BuildContext context) {
@@ -34,9 +36,11 @@ class CustomAppBar {
                       margin: EdgeInsets.only(left: 16.0),
                       radius: 6.0,
                       firstColor: Theme.of(context).textTheme.body2.color,
-                      secondColor: Color(0xFF595656),
+                      secondColor: Theme.of(context).textTheme.body1.color.withOpacity(.8),
                       onToggled: () {
-                        _toggled.value ? _menuController.reverse().orCancel : _menuController.forward().orCancel;
+                        _toggled.value
+                            ? _menuController.reverse().orCancel
+                            : _menuController.forward().orCancel;
                         _toggled.value = !_toggled.value;
                       },
                       value: _toggled.value,
@@ -46,7 +50,8 @@ class CustomAppBar {
                 UserProfile(
                   context: context,
                   margin: EdgeInsets.only(right: 0.0),
-                  onTap: () {},
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ProfileSettings())),
                 )
               ],
             ),

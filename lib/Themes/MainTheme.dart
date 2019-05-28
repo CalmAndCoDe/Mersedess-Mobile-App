@@ -32,11 +32,13 @@ class AppTheme {
 
   darkMode() {
     return ThemeData(
-        primaryColor: Color(0xFFFFFFFF),
+        primaryColor: Color(0xFF212121),
         accentColor: Color(0xFFFBFBFB),
         buttonColor: Color(0xFFF5664B),
+        backgroundColor: Color(0xFF272727),
+        brightness: Brightness.dark,
         textTheme: TextTheme(
-            body1: TextStyle(color: Color(0xFF000000)),
-            body2: TextStyle(color: Color(0xFF000000))));
+            body1: TextStyle(color: Color(0xFFFFFFFF)),
+            body2: TextStyle(color: Color(0xFFfbc72f))));
   }
 }

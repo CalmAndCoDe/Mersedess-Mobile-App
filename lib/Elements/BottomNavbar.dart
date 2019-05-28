@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile_app/Bloc/LoginUser.dart';
+import 'package:mobile_app/Bloc/Themes.dart';
 import 'package:mobile_app/Elements/AppBar.dart';
 import 'package:mobile_app/Elements/MenuItemBuilder.dart';
-
-
 
 class Menu extends StatelessWidget {
   final CustomAppBar appbar;
@@ -12,7 +12,6 @@ class Menu extends StatelessWidget {
   final ValueNotifier<String> menuSelected;
   final PageController _menuController;
 
-  
   const Menu({
     Key key,
     @required this.appbar,
@@ -84,17 +83,25 @@ class Menu extends StatelessWidget {
                           ),
                         ),
                         CustomMenuItem(
-                          onTap: () => menuSelected.value = 'profile',
-                          isSelected: menu == 'profile',
+                          onTap: () {
+                            var theme = ThemesChanger.instance();
+                            theme.darkmode
+                                ? theme.themeEvents.add(ThemeMode.Light)
+                                : theme.themeEvents.add(ThemeMode.Dark);
+                          },
+                          isSelected: menu == 'darkMode',
                           itemColor: Theme.of(context).textTheme.body2.color,
                           child: Icon(
-                            FontAwesomeIcons.userCircle,
+                            FontAwesomeIcons.lightbulb,
                             color: Theme.of(context).textTheme.body2.color,
                           ),
                         ),
                         CustomMenuItem(
                           onTap: () {
-                            LoginUser.instance().loginEvents.add(Error.AuthenticationError);
+                            LoginUser.instance()
+                                .loginEvents
+                                .add(Error.AuthenticationError);
+                            DiskCache().clear();
                             menuSelected.value = 'logout';
                           },
                           isSelected: menu == 'logout',

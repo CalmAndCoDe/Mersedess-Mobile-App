@@ -6,6 +6,7 @@ enum ThemeMode { Dark, Light }
 
 class ThemesChanger {
   ThemeData theme = AppTheme().lightMode();
+  bool darkmode = false;
 
   final StreamController themeState = StreamController.broadcast();
   StreamSink get themeIn => themeState.sink;
@@ -28,10 +29,12 @@ class ThemesChanger {
     switch (event) {
       case ThemeMode.Light:
         theme  = AppTheme().lightMode();
+        darkmode = false;
         themeState.add(theme);
         break;
       case ThemeMode.Dark:
         theme = AppTheme().darkMode();
+        darkmode = true;
         themeState.add(theme);
         break;
     }

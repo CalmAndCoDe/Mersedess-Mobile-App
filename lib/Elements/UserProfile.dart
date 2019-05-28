@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 
 class UserProfile extends StatefulWidget {
   final BuildContext context;
@@ -12,6 +13,7 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  var imageBytes;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,11 +32,27 @@ class _UserProfileState extends State<UserProfile> {
             child: Container(
                 height: 40,
                 width: 40,
-                child: Image.asset(
-                  'images/placeholderimage.jpg',
-                  fit: BoxFit.cover,
-                )),
+                child: FutureBuilder(
+                  future: _loadImage(),
+                  initialData: imageBytes,
+                  builder: (context, snapshot) {
+                    if(snapshot.hasData) {
+                      return Image.memory(snapshot.data);
+                    }else {
+                      return CircularProgressIndicator(
+                        backgroundColor: Theme.of(context).textTheme.body2.color,
+                      );
+                    }
+                  },
+                ),
           )),
+      )
     );
+    
+  }
+
+  _loadImage() async {
+    var bytes = await  DiskCache().load('proPic');
+    return bytes;
   }
 }
