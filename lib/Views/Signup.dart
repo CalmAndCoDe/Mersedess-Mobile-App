@@ -56,6 +56,13 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(

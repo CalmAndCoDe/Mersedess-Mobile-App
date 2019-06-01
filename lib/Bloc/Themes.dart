@@ -2,6 +2,8 @@ import 'package:mobile_app/Themes/MainTheme.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 enum ThemeMode { Dark, Light }
 
 class ThemesChanger {
@@ -29,11 +31,17 @@ class ThemesChanger {
     switch (event) {
       case ThemeMode.Light:
         theme  = AppTheme().lightMode();
+        SharedPreferences.getInstance().then((instance) {
+          instance.setBool('theme_mode', false);
+        });
         darkmode = false;
         themeState.add(theme);
         break;
       case ThemeMode.Dark:
         theme = AppTheme().darkMode();
+        SharedPreferences.getInstance().then((instance) {
+          instance.setBool('theme_mode', true);
+        });
         darkmode = true;
         themeState.add(theme);
         break;

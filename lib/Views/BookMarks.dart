@@ -23,6 +23,11 @@ class _BookmarksState extends State<Bookmarks> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
         child: Container(

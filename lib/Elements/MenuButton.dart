@@ -51,21 +51,6 @@ class MenuButtonState extends State<MenuButton> {
                   ),
                 ],
               ),
-              Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: CircleAvatar(
-                      radius: widget.radius,
-                      backgroundColor: widget.secondColor,
-                    ),
-                  ),
-                  CircleAvatar(
-                    radius: widget.radius,
-                    backgroundColor: widget.secondColor,
-                  ),
-                ],
-              )
             ],
           ),
         ),

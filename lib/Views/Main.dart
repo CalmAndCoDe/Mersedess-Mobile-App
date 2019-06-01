@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobile_app/Bloc/Main.dart';
+import 'package:mobile_app/Bloc/Profile.dart';
 import 'package:mobile_app/Elements/AppBar.dart';
 import 'package:mobile_app/Elements/BottomNavbar.dart';
 import 'package:mobile_app/Elements/MainSlider.dart';
@@ -17,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   var appbar = CustomAppBar.getInstance();
   var menuSelected = ValueNotifier('home');
   var roomsFetch = MainFetch.instance();
+  var profileFetch = UserProfileFetch.instance();
   PageStorageBucket _bucket = PageStorageBucket();
   PageStorageKey firstPage = PageStorageKey('MainPage');
   PageStorageKey secondPage = PageStorageKey('BookmarksPage');
@@ -29,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void initState() {
     _menuController = PageController(initialPage: 0, keepPage: true);
     roomsFetch.roomsEvents.add(Rooms.Fetch);
+    profileFetch.userEvents.add(Profile.Fetch);
     _menuAnimationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     appbar.menuController = _menuAnimationController;
@@ -38,6 +41,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         .animate(CurvedAnimation(
             curve: Curves.easeInCubic, parent: _animationController));
     super.initState();
+  }
+
+
+  @override
+  void dispose() {
+    _menuAnimationController.dispose();
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override

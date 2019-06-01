@@ -28,8 +28,9 @@ class TextFieldBuilder extends StatelessWidget {
         onChanged: onChanged,
         obscureText: isPassword,
         decoration: InputDecoration(
+          border: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor)),
           focusedBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+              UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor)),
           labelText: text,
           labelStyle: TextStyle(
               fontFamily: 'PT Sans',

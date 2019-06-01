@@ -10,14 +10,14 @@ import 'dart:ui' as ui;
 enum Rooms { Fetch }
 
 class MainFetch {
-  dynamic rooms = null;
+  List rooms = List();
+  var propic;
   BuildContext context;
 
   set setContext(getcontext) {
     context = getcontext;
   }
 
-  static List cachedImages = List();
 
   StreamController roomsState = StreamController.broadcast();
   StreamSink get roomsIn => roomsState.sink;
@@ -42,52 +42,50 @@ class MainFetch {
 
   _mapEventToState(event) async {
     if (event is Rooms) {
-      rooms = await RoomsFetchMethods().getRooms(context);
-      print('rooms: ${rooms}');
+      var roomsJson = await RoomsFetchMethods().getRooms(context);
+      propic = roomsJson['ProPic'];
+      rooms.clear();
+      roomsJson['Rooms'].forEach((room) async {
+        var cachedImage = await DiskCache().load(room['id'].toString(),
+            rule: CacheRule(maxAge: Duration(days: 7)));
+        if (cachedImage != null) {
+          var codec = await ui.instantiateImageCodec(cachedImage);
+          var frame = await codec.getNextFrame();
+          rooms.add(Deserialzer.fromJson(room['id'], room['rooms'],
+              room['title'], frame.image, room['details'], cachedImage));
+              roomsState.add(rooms);
+        } else {
+          var networkImage = NetworkImage(
+              'https://mersedess-beta.herokuapp.com${room['image']}');
+          networkImage.obtainKey(ImageConfiguration()).then((image) {
+            image.load(image).addListener((bytes, loaded) async {
+              var byte =
+                  await bytes.image.toByteData(format: ui.ImageByteFormat.png);
+              var list = byte.buffer.asUint8List();
+              await DiskCache().save(room['id'].toString(), list,
+                  CacheRule(maxAge: Duration(days: 7)));
+              rooms.add(Deserialzer.fromJson(room['id'], room['rooms'],
+                  room['title'], bytes.image, room['details'], list));
+              roomsState.add(rooms);
+            });
+          });
+        }
+      });
     }
-    roomsState.add(rooms);
   }
 }
 
 class RoomsFetchMethods {
-  Future<List> getRooms(context) async {
+  Future getRooms(context) async {
     var token = await FlutterSecureStorage().read(key: 'access_token');
     var rooms = await get('https://mersedess-beta.herokuapp.com/api/main');
     var profilePic = await post(
         'https://mersedess-beta.herokuapp.com/api/auth/userpic',
         headers: {
-          'Authorization' : token,
-          'content-type' : 'image/jpg'
+          'Authorization': token,
         });
-    DiskCache().save('proPic', profilePic.bodyBytes, CacheRule(maxAge: Duration(days: 7)));
     List roomsJson = jsonDecode(rooms.body);
-    List allRooms = List();
-    return await Future.sync(() async {
-      for (var i = 0; i < roomsJson.length; i++) {
-        var frame;
-        var imageData;
-        await precacheImage(
-            AdvancedNetworkImage(
-                'https://mersedess-beta.herokuapp.com/${roomsJson[i]['image']}',
-                cacheRule: CacheRule(maxAge: Duration(days: 7)),
-                postProcessing: (Uint8List list) async {
-              imageData = list;
-              var codec = await ui.instantiateImageCodec(list);
-              frame = await codec.getNextFrame();
-            }, useDiskCache: true),
-            context);
-            // allRooms.clear();
-            allRooms.add(Deserialzer.fromJson(
-            roomsJson[i]['id'],
-            roomsJson[i]['rooms'],
-            roomsJson[i]['title'],
-            frame.image,
-            roomsJson[i]['details'],
-            imageData));
-      }
-    }).then((value) {
-      return allRooms ?? 'not available';
-    });
+    return {'Rooms': roomsJson, 'ProPic': profilePic.body};
   }
 }
 

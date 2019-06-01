@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_app/Bloc/Main.dart';
+import 'package:mobile_app/Functions/Toast.dart';
 import 'package:mobile_app/Views/Room.dart';
 
 class MainSlider extends StatefulWidget {
@@ -30,7 +31,6 @@ class MainSliderState extends State<MainSlider>
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,7 +39,7 @@ class MainSliderState extends State<MainSlider>
           stream: roomsFetch.roomsStream,
           initialData: roomsFetch.rooms,
           builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
+            if (snapshot.data.length > 0) {
               return Stack(children: [
                 PageView.builder(
                   controller: _pageController,
@@ -134,7 +134,6 @@ class MainSliderState extends State<MainSlider>
         ));
   }
 
-
   dispose() {
     _animationController.dispose();
     _pageController.dispose();
@@ -153,95 +152,94 @@ class MainSliderState extends State<MainSlider>
           animation = (1 - value.abs() * .200).clamp(0.0, 1.0);
         }
 
-        return ListView(
-          physics: BouncingScrollPhysics(),
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () => list.image != null
-                      ? Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Room(
-                                  imageTag: 'item-$page',
-                                  textTag: 'item-text-$page',
-                                  image: list.image,
-                                  roomDetails: list,
-                                ),
-                          ))
-                      : Future(() {
-                          var platform = MethodChannel('android-toast');
-                          platform.invokeMethod(
-                              'showToast', {"message": "Image Not Loaded Yet"});
-                        }),
-                  child: Hero(
-                    tag: 'item-$page',
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(70),
-                      child: Container(
-                        decoration:
-                            BoxDecoration(color: Colors.white, boxShadow: [
-                          BoxShadow(
-                              blurRadius: 20,
-                              offset: Offset(0.0, 0.0),
-                              color: Colors.black.withOpacity(.05)),
-                        ]),
-                        child: AnimatedContainer(
-                          child: Image.memory(
-                            list.imageData,
-                            fit: BoxFit.cover,
-                            alignment:
-                                FractionalOffset((value.abs() / 4) ?? 0.0, 0.0),
+        return Container(
+          margin: EdgeInsets.only(top: 16.0),
+          child: ListView(
+            physics: BouncingScrollPhysics(),
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () => list.image != null
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Room(
+                                    imageTag: 'item-$page',
+                                    textTag: 'item-text-$page',
+                                    image: list.image,
+                                    roomDetails: list,
+                                  ),
+                            ))
+                        : showToast('image isn\'t loaded yet'),
+                    child: Hero(
+                      tag: 'item-$page',
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(70),
+                        child: Container(
+                          decoration:
+                              BoxDecoration(color: Colors.white, boxShadow: [
+                            BoxShadow(
+                                blurRadius: 20,
+                                offset: Offset(0.0, 0.0),
+                                color: Colors.black.withOpacity(.05)),
+                          ]),
+                          child: AnimatedContainer(
+                            child: Image.memory(
+                              list.imageData,
+                              fit: BoxFit.cover,
+                              alignment: FractionalOffset(
+                                  (value.abs() / 4) ?? 0.0, 0.0),
+                            ),
+                            duration: Duration(milliseconds: 100),
+                            constraints: BoxConstraints.expand(
+                                height: animation * screenHeight * .50,
+                                width: MediaQuery.of(context).size.width * .70),
                           ),
-                          duration: Duration(milliseconds: 100),
-                          constraints: BoxConstraints.expand(
-                              height: animation * screenHeight * .50,
-                              width: MediaQuery.of(context).size.width * .70),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  transform: Matrix4.translationValues(
-                      0, value.abs() * screenHeight * .50, 0),
-                  margin: EdgeInsets.only(top: 16.0, left: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(left: 16.0, bottom: 16.0),
-                        child: Hero(
-                          tag: 'item-text-$page',
-                          transitionOnUserGestures: true,
+                  Container(
+                    transform: Matrix4.translationValues(
+                        0, value.abs() * screenHeight * .50, 0),
+                    margin: EdgeInsets.only(top: 16.0, left: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 16.0, bottom: 16.0),
+                          child: Hero(
+                            tag: 'item-text-$page',
+                            transitionOnUserGestures: true,
+                            child: Text(
+                              list.title,
+                              style: TextStyle(
+                                  fontFamily: 'Open Sans Condensed',
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
-                            list.title,
+                            list.details,
                             style: TextStyle(
-                                fontFamily: 'Open Sans Condensed',
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold),
+                              fontFamily: 'Open Sans Condensed',
+                              fontSize: 14,
+                            ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(
-                          list.details,
-                          style: TextStyle(
-                            fontFamily: 'Open Sans Condensed',
-                            fontSize: 14,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ],
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         );
       },
     );

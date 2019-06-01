@@ -34,12 +34,10 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-
   Future<bool> _shouldAuthenticate() async {
     var res = await FlutterSecureStorage().read(key: 'authenticate');
-    return res=='true' ? true : false;
+    return res == 'true' ? true : false;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -78,28 +76,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       //Main View
                       return HomeScreen();
                     }
-                  }else {
-                    return CircularProgressIndicator(); 
+                  } else {
+                    return CircularProgressIndicator();
                   }
                 },
               );
             } else {
               // all of user login and signup procedure
               return Scaffold(
-                  backgroundColor: Theme.of(context).backgroundColor,
-                  body: PageView(
-                    controller: _pageController,
-                    physics: NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    children: <Widget>[
-                      Login(
-                        pageController: _pageController,
-                      ),
-                      Signup(
-                        login: _pageController,
-                      )
-                    ],
-                  ));
+                backgroundColor: Theme.of(context).backgroundColor,
+                body: PageView(
+                  controller: _pageController,
+                  physics: NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  children: <Widget>[
+                    Login(
+                      pageController: _pageController,
+                    ),
+                    Signup(
+                      login: _pageController,
+                    )
+                  ],
+                ),
+              );
             }
           }
         },

@@ -51,6 +51,7 @@ class LoginUser {
         isUserLoggedIn = false;
         loginErrors = "Empty Fields";
       } else {
+        loginErrors = '';
         isUserLoggedIn = true;
         var token = jsonDecode(res);
         FlutterSecureStorage()

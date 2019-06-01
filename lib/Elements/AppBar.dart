@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:mobile_app/Elements/MenuButton.dart';
 import 'package:mobile_app/Elements/UserProfile.dart';
+import 'package:mobile_app/Functions/Toast.dart';
 import 'package:mobile_app/Views/ProfileSettings.dart';
 
 class CustomAppBar {
@@ -36,7 +38,11 @@ class CustomAppBar {
                       margin: EdgeInsets.only(left: 16.0),
                       radius: 6.0,
                       firstColor: Theme.of(context).textTheme.body2.color,
-                      secondColor: Theme.of(context).textTheme.body1.color.withOpacity(.8),
+                      secondColor: Theme.of(context)
+                          .textTheme
+                          .body1
+                          .color
+                          .withOpacity(.8),
                       onToggled: () {
                         _toggled.value
                             ? _menuController.reverse().orCancel
@@ -50,8 +56,18 @@ class CustomAppBar {
                 UserProfile(
                   context: context,
                   margin: EdgeInsets.only(right: 0.0),
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ProfileSettings())),
+                  onTap: () async {
+                    var image = await DiskCache().load('proPic');
+                    if (image != null) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ProfileSettings(
+                                proPic: image,
+                              ),
+                        ),
+                      );
+                    }else showToast('loading...');
+                  },
                 )
               ],
             ),

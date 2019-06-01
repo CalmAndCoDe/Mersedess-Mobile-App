@@ -45,7 +45,7 @@ class Menu extends StatelessWidget {
                   itemColor: Theme.of(context).textTheme.body2.color,
                   child: Icon(
                     Icons.arrow_downward,
-                    color: Theme.of(context).primaryColor,
+                    color: Colors.white
                   ),
                 ),
                 ValueListenableBuilder(
