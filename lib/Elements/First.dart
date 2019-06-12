@@ -5,6 +5,7 @@ import 'package:mobile_app/Bloc/SignUp.dart';
 import 'package:mobile_app/Elements/Custombutton.dart';
 import 'package:mobile_app/Elements/TextFieldBuilder.dart';
 import 'package:mobile_app/Functions/Sequencer.dart';
+import 'package:mobile_app/Functions/TextStyles.dart';
 
 class First extends StatefulWidget {
   final PageController mainSlider;
@@ -176,7 +177,8 @@ class _FirstState extends State<First> with SingleTickerProviderStateMixin {
             },
           ),
           SlideTransition(
-            position: sequencer(_animationController, 0.400, 0.600,Curves.easeInOutCirc),
+            position: sequencer(
+                _animationController, 0.400, 0.600, Curves.easeInOutCirc),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -192,14 +194,10 @@ class _FirstState extends State<First> with SingleTickerProviderStateMixin {
                       borderRadius: BorderRadius.circular(22),
                     ),
                     child: Center(
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                          color: Theme.of(context).textTheme.body2.color,
-                          fontFamily: 'Open Sans Condensed',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: Text('Login',
+                          style: settingButtonStyle.copyWith(
+                            color: Theme.of(context).textTheme.body2.color,
+                          )),
                     ),
                   ),
                 ),
@@ -240,5 +238,4 @@ class _FirstState extends State<First> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
 }

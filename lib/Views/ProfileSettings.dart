@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mobile_app/Bloc/LoginUser.dart';
 import 'package:mobile_app/Bloc/Profile.dart';
 import 'package:mobile_app/Bloc/Themes.dart';
 import 'package:mobile_app/Elements/SettingButton.dart';
+import 'package:mobile_app/Functions/TextStyles.dart';
+import 'package:mobile_app/Views/About.dart';
+import 'package:mobile_app/Views/Authentication.dart';
+import 'package:mobile_app/Views/UserDetails.dart';
 
 class ProfileSettings extends StatefulWidget {
   final proPic;
@@ -20,6 +25,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Material(
+      borderOnForeground: true,
       color: Theme.of(context).backgroundColor,
       child: Column(
         children: <Widget>[
@@ -60,10 +66,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 snapshot.data.fullName.toString(),
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    fontFamily: 'Open Sans Condensed',
-                                    fontWeight: FontWeight.bold),
+                                style: titleStylesmall,
                               ),
                             );
                           } else {
@@ -92,7 +95,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                             text: 'Dark Mode',
                             isSelected: themes.darkmode,
                             isTogglable: true,
-                            onTap: () => themes.themeEvents.add(ThemeMode.Light),
+                            onTap: () =>
+                                themes.themeEvents.add(ThemeMode.Light),
                           );
                         } else {
                           return SettingButton(
@@ -111,24 +115,36 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     text: 'Authentication',
                     isSelected: false,
                     isTogglable: false,
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AuthenticationSettings())),
                   ),
                   SettingButton(
                     icon: FontAwesomeIcons.userCircle,
                     text: 'User Details',
                     isSelected: false,
                     isTogglable: false,
+                    onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => UserDetails())),
                   ),
                   SettingButton(
                     icon: FontAwesomeIcons.info,
                     text: 'About',
                     isSelected: false,
                     isTogglable: false,
+                    onTap: () => Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => About())),
                   ),
                   SettingButton(
                     icon: FontAwesomeIcons.signOutAlt,
                     text: 'Logout',
                     isSelected: false,
                     isTogglable: false,
+                    onTap: ()  {
+                      Navigator.pop(context);
+                      LoginUser.instance()
+                        .loginEvents
+                        .add(Error.AuthenticationError);
+                    },
                   ),
                 ],
               ),

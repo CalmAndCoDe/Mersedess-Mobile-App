@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_app/Bloc/Main.dart';
+import 'package:mobile_app/Functions/TextStyles.dart';
 import 'package:mobile_app/Functions/Toast.dart';
 import 'package:mobile_app/Views/Room.dart';
 
@@ -86,10 +87,7 @@ class MainSliderState extends State<MainSlider>
                               currentPage != 0
                                   ? ((currentPage - 1) + 1).toString()
                                   : '',
-                              style: TextStyle(
-                                  fontFamily: 'Open Sans Condensed',
-                                  color:
-                                      Theme.of(context).textTheme.body1.color),
+                              style: defaultStyle,
                             ),
                           ),
                           Container(
@@ -98,10 +96,7 @@ class MainSliderState extends State<MainSlider>
                               ..rotateX((pi / 180) * (animation * 100)),
                             child: Text(
                               (currentPage + 1).toString(),
-                              style: TextStyle(
-                                  fontFamily: 'Open Sans Condensed',
-                                  color:
-                                      Theme.of(context).textTheme.body1.color),
+                              style: defaultStyle,
                             ),
                           ),
                           Container(
@@ -112,10 +107,7 @@ class MainSliderState extends State<MainSlider>
                               (currentPage + 1) <= roomsFetch.rooms.length - 1
                                   ? (currentPage + 2).toString()
                                   : '',
-                              style: TextStyle(
-                                  fontFamily: 'Open Sans Condensed',
-                                  color:
-                                      Theme.of(context).textTheme.body1.color),
+                              style: defaultStyle,
                             ),
                           )
                         ],
@@ -216,10 +208,7 @@ class MainSliderState extends State<MainSlider>
                             transitionOnUserGestures: true,
                             child: Text(
                               list.title,
-                              style: TextStyle(
-                                  fontFamily: 'Open Sans Condensed',
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold),
+                              style: titleStyle,
                             ),
                           ),
                         ),

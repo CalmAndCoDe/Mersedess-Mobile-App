@@ -7,6 +7,7 @@ import 'package:mobile_app/Elements/Custombutton.dart';
 import 'package:mobile_app/Elements/Round.dart';
 import 'package:mobile_app/Elements/TextFieldBuilder.dart';
 import 'package:mobile_app/Functions/Sequencer.dart';
+import 'package:mobile_app/Functions/TextStyles.dart';
 
 class Login extends StatefulWidget {
   var login = LoginUser.instance();
@@ -84,18 +85,14 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             Text(
                               'Login',
                               textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 48,
-                                  fontFamily: 'Great Vibes'),
-                            ),
-                            Text(
-                              'Login to your account',
-                              style: TextStyle(
+                              style: signUpStyle.copyWith(
                                 color: Theme.of(context).primaryColor,
-                                fontFamily: 'Open Sans Condensed',
+                                fontSize: 48
                               ),
-                            )
+                            ),
+                            Text('Login to your account',
+                                style: defaultStyle.copyWith(
+                                    color: Theme.of(context).primaryColor))
                           ],
                         ),
                       ),
@@ -157,7 +154,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                 Container(
                                   margin: EdgeInsets.all(8.0),
                                   child: SlideTransition(
-                                    position: sequencer(_animationController, 0.200, 0.400, Curves.easeInOutCirc),
+                                    position: sequencer(_animationController,
+                                        0.200, 0.400, Curves.easeInOutCirc),
                                     child: TextFieldBuilder(
                                       context: context,
                                       text: 'Username :',
@@ -169,7 +167,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                 Container(
                                   margin: EdgeInsets.all(8.0),
                                   child: SlideTransition(
-                                      position: sequencer(_animationController, 0.300, 0.500, Curves.easeInOutCirc),
+                                      position: sequencer(_animationController,
+                                          0.300, 0.500, Curves.easeInOutCirc),
                                       child: TextFieldBuilder(
                                         context: context,
                                         text: 'Password :',
@@ -191,7 +190,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                         },
                       ),
                       SlideTransition(
-                        position: sequencer(_animationController, 0.400, 0.600, Curves.easeInOutCirc),
+                        position: sequencer(_animationController, 0.400, 0.600,
+                            Curves.easeInOutCirc),
                         child: Container(
                           margin: EdgeInsets.symmetric(
                               horizontal: 8.0, vertical: 8.0),
@@ -210,9 +210,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                   }),
                               Text(
                                 'Keep me logged in',
-                                style: TextStyle(
-                                    fontFamily: 'PT Sans',
-                                    fontWeight: FontWeight.bold),
+                                style: ptSansStyle,
                               )
                             ],
                           ),
@@ -222,7 +220,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   ),
                 ),
                 SlideTransition(
-                  position: sequencer(_animationController, 0.500, 0.700, Curves.easeInOutCirc),
+                  position: sequencer(
+                      _animationController, 0.500, 0.700, Curves.easeInOutCirc),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
@@ -258,15 +257,14 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                   ));
                             } else {
                               return GestureDetector(
-                                onTap: () => widget.login.loginEvents.add(
-                                        AutheticateUser(credentials: {
-                                      'username': _username,
-                                      'password': _password
-                                    }, shouldSaveToken: selected)),
-                                child: CustomButton(
-                                  child: CircularProgressIndicator(),
-                                )
-                              );
+                                  onTap: () => widget.login.loginEvents.add(
+                                          AutheticateUser(credentials: {
+                                        'username': _username,
+                                        'password': _password
+                                      }, shouldSaveToken: selected)),
+                                  child: CustomButton(
+                                    child: CircularProgressIndicator(),
+                                  ));
                             }
                           },
                         ),

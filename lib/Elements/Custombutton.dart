@@ -20,6 +20,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: BoxConstraints.loose(Size(height,width)),
       width: height ,
       height: width ,
       decoration: BoxDecoration(

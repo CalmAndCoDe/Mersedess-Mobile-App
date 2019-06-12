@@ -7,9 +7,9 @@ import 'package:mobile_app/Elements/First.dart';
 import 'package:mobile_app/Elements/ImageSelector.dart';
 import 'package:mobile_app/Elements/Second.dart';
 import 'package:mobile_app/Elements/Third.dart';
+import 'package:mobile_app/Functions/TextStyles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
-
 
 class Signup extends StatefulWidget {
   final login;
@@ -120,17 +120,12 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
                           children: <Widget>[
                             Text(
                               'Sign Up',
-                              style: TextStyle(
-                                  fontFamily: 'Great Vibes',
-                                  fontSize: 40,
+                              style: signUpStyle.copyWith(
                                   color: Theme.of(context).primaryColor),
                             ),
-                            Text(
-                              'Create an Account',
-                              style: TextStyle(
-                                  fontFamily: 'Open Sans Condensed',
-                                  color: Theme.of(context).primaryColor),
-                            ),
+                            Text('Create an Account',
+                                style: defaultStyle.copyWith(
+                                    color: Theme.of(context).primaryColor,)),
                           ],
                         ),
                       ),

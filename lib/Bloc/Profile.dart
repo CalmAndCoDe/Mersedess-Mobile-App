@@ -42,24 +42,34 @@ class FetchProfile {
     var res = await post(
         'https://mersedess-beta.herokuapp.com/api/auth/reservation',
         headers: {'Authorization': token});
-    var resJson = jsonDecode(res.body);
-    if (resJson == 'no token or expired') {
-      // delete all credentials
-      FlutterSecureStorage().deleteAll();
+    
+    if (res.body == 'no token or expired') {
       // push to login screen
       LoginUser.instance().loginEvents.add(Error.AuthenticationError);
       return null;
     } else {
+      var resJson = jsonDecode(res.body);
       return ProfileDeserializer.fromJson(
-          resJson['Profile']['first_name'], resJson['Profile']['last_name']);
+          resJson['Profile']['first_name'],
+          resJson['Profile']['last_name'],
+          resJson['Profile']['gender'],
+          resJson['Profile']['age'],
+          resJson['Profile']['birthdate']);
     }
   }
 }
 
 class ProfileDeserializer {
   String fullName;
-  ProfileDeserializer.fromJson(String firstName, String lastName) {
+  String gender;
+  int age;
+  String birthdate;
+  ProfileDeserializer.fromJson(
+      String firstName, String lastName, gender, age, birthdate) {
     this.fullName =
         '${firstName.substring(0, 1).toUpperCase() + firstName.substring(1, firstName.length)} ${lastName.substring(0, 1).toUpperCase() + lastName.substring(1, lastName.length)}';
+    this.gender = gender;
+    this.birthdate = birthdate;
+    this.age = age;
   }
 }

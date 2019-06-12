@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile_app/Bloc/LoginUser.dart';
 import 'package:mobile_app/Bloc/Themes.dart';
@@ -98,10 +97,7 @@ class Menu extends StatelessWidget {
                         ),
                         CustomMenuItem(
                           onTap: () {
-                            LoginUser.instance()
-                                .loginEvents
-                                .add(Error.AuthenticationError);
-                            DiskCache().clear();
+                            LoginUser.instance().loginEvents.add(Error.AuthenticationError);
                             menuSelected.value = 'logout';
                           },
                           isSelected: menu == 'logout',

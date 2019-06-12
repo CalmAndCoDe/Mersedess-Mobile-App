@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Functions/TextStyles.dart';
 
 class SettingButton extends StatelessWidget {
   final IconData icon;
@@ -32,6 +33,8 @@ class SettingButton extends StatelessWidget {
                 color: Theme.of(context).textTheme.body2.color,
                 borderRadius: BorderRadius.circular(12)),
             child: InkWell(
+              enableFeedback: true,
+              borderRadius: BorderRadius.circular(12),
               onTap: onTap,
               child: Icon(
                 icon,
@@ -43,9 +46,12 @@ class SettingButton extends StatelessWidget {
             height: 44,
             width: MediaQuery.of(context).size.width * .70,
             decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(12)),
+              color: Theme.of(context).primaryColor.withOpacity(.8),
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: InkWell(
+              enableFeedback: true,
+              borderRadius: BorderRadius.circular(12),
               onTap: onTap,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,9 +60,7 @@ class SettingButton extends StatelessWidget {
                     padding: EdgeInsets.only(left: 8.0),
                     child: Text(
                       text,
-                      style: TextStyle(
-                          fontFamily: 'Open Sans Condensed',
-                          fontWeight: FontWeight.bold),
+                      style: settingButtonStyle,
                     ),
                   ),
                   isTogglable
@@ -64,11 +68,9 @@ class SettingButton extends StatelessWidget {
                           padding: EdgeInsets.only(right: 8.0),
                           child: Text(
                             isSelected ? 'ON' : 'OFF',
-                            style: TextStyle(
-                                fontFamily: 'Open Sans Condensed',
-                                color:
-                                    Theme.of(context).textTheme.body2.color,
-                                fontWeight: FontWeight.bold),
+                            style: settingButtonStyle.copyWith(
+                              color: Theme.of(context).textTheme.body2.color
+                            ),
                           ),
                         )
                       : Container(),

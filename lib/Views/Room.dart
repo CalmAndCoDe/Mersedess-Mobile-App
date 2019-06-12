@@ -10,6 +10,7 @@ import 'package:mobile_app/Bloc/Rooms.dart';
 import 'package:mobile_app/Elements/Button.dart';
 import 'package:mobile_app/Functions/IconRating.dart';
 import 'package:mobile_app/Functions/Sequencer.dart';
+import 'package:mobile_app/Functions/TextStyles.dart';
 import 'package:mobile_app/Painter/ImagePainter.dart';
 import 'dart:convert';
 
@@ -151,7 +152,7 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
                       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                       child: Container(
                           height: 80,
-                          width: MediaQuery.of(context).size.width - 50,
+                          width: MediaQuery.of(context).size.width *.90,
                           color: Theme.of(context).backgroundColor.withOpacity(.5),
                           child: Padding(
                             padding:
@@ -167,16 +168,11 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
                                       children: <Widget>[
                                         Text(
                                           widget.roomDetails.title,
-                                          style: TextStyle(
-                                              fontFamily: 'Open Sans Condensed',
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.bold),
+                                          style: titleStyle,
                                         ),
                                         Text(
                                           'Rooms: ${widget.roomDetails.rooms}',
-                                          style: TextStyle(
-                                            fontFamily: 'Open Sans Condensed',
-                                          ),
+                                          style: defaultStyle
                                         )
                                       ],
                                     ),
@@ -196,12 +192,12 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
                                       Navigator.of(context).pop(context);
                                   },
                                   height: 30,
-                                  width: 80,
+                                  width: 60,
                                   child: Text(
                                     'BOOK',
-                                    style: TextStyle(
-                                        color:
-                                            Theme.of(context).backgroundColor),
+                                    style: defaultStyle.copyWith(
+                                      color: Theme.of(context).backgroundColor
+                                    )
                                   ),
                                 )
                               ],
@@ -221,7 +217,7 @@ class _RoomState extends State<Room> with SingleTickerProviderStateMixin {
                         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                         child: Container(
                           padding: EdgeInsets.all(16.0),
-                          width: MediaQuery.of(context).size.width - 50,
+                          width: MediaQuery.of(context).size.width * .90,
                           color: Theme.of(context).backgroundColor.withOpacity(.5),
                           child: Text(
                             widget.roomDetails.details,

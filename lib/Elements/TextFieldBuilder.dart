@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-
+import 'package:mobile_app/Functions/TextStyles.dart';
 
 class TextFieldBuilder extends StatelessWidget {
   final BuildContext context;
@@ -18,7 +17,8 @@ class TextFieldBuilder extends StatelessWidget {
       this.isPassword = false,
       this.isError = false,
       this.error,
-      this.icon,@required this.context})
+      this.icon,
+      @required this.context})
       : super(key: key);
 
   @override
@@ -28,16 +28,19 @@ class TextFieldBuilder extends StatelessWidget {
         onChanged: onChanged,
         obscureText: isPassword,
         decoration: InputDecoration(
-          border: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor)),
-          focusedBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor)),
+          border: UnderlineInputBorder(
+              borderSide:
+                  BorderSide(color: Theme.of(context).textTheme.body1.color)),
+          focusedBorder: UnderlineInputBorder(
+              borderSide:
+                  BorderSide(color: Theme.of(context).textTheme.body1.color)),
           labelText: text,
-          labelStyle: TextStyle(
-              fontFamily: 'PT Sans',
+          labelStyle: ptSansRegular.copyWith(
               color: Theme.of(context).textTheme.body1.color),
-              errorText: isError ? error : null,
-          prefixIcon: Icon(icon,
-            color: Theme.of(context).iconTheme.color,
+          errorText: isError ? error : null,
+          prefixIcon: Icon(
+            icon,
+            color: Theme.of(context).textTheme.body1.color,
           ),
         ),
       ),

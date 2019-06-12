@@ -55,16 +55,18 @@ class _UserProfileState extends State<UserProfile> {
 
   _loadImage() async {
     var token = await FlutterSecureStorage().read(key: 'access_token');
-    var profilePic = await DiskCache().load('proPic',rule: CacheRule(maxAge: Duration(days: 7)));
-    if (profilePic != null) {
-      return await DiskCache().load('proPic',rule: CacheRule(maxAge: Duration(days: 7)));
+    var profilePic = await DiskCache()
+        .load('proPic', rule: CacheRule(maxAge: Duration(days: 7)));
+    var pic = await post(
+        'https://mersedess-beta.herokuapp.com/api/auth/userpic',
+        headers: {'Authorization': token, 'content-type': 'image/jpeg'});
+    String imageBase64 = pic.body;
+    var base64image = imageBase64.split(',');
+    Uint8List image = base64.decode(base64image[1]);
+    if (profilePic == image) {
+      return await DiskCache()
+          .load('proPic', rule: CacheRule(maxAge: Duration(days: 7)));
     } else {
-      var pic = await post(
-          'https://mersedess-beta.herokuapp.com/api/auth/userpic',
-          headers: {'Authorization': token, 'content-type': 'image/jpeg'});
-      String imageBase64 = pic.body;
-      var base64image = imageBase64.split(',');
-      Uint8List image = base64.decode(base64image[1]);
       DiskCache().save('proPic', image, CacheRule(maxAge: Duration(days: 7)));
       return image;
     }

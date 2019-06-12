@@ -42,12 +42,12 @@ class MenuButtonState extends State<MenuButton> {
                     padding: const EdgeInsets.all(2.0),
                     child: CircleAvatar(
                       radius: widget.radius,
-                      backgroundColor: widget.secondColor,
+                      backgroundColor:  widget.value ?  widget.firstColor : widget.secondColor,
                     ),
                   ),
                   CircleAvatar(
                     radius: widget.radius,
-                    backgroundColor: widget.value ?  Colors.blue : widget.firstColor
+                    backgroundColor: widget.firstColor
                   ),
                 ],
               ),

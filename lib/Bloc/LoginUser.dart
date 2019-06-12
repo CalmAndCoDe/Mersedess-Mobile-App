@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mobile_app/Bloc/Main.dart';
 
 enum Done { UserCreate }
 enum Error { AuthenticationError }
@@ -64,6 +67,7 @@ class LoginUser {
       print(event);
       isUserLoggedIn = true;
     } else if (event is Error) {
+      MainFetch.instance().rooms.clear();
       FlutterSecureStorage().deleteAll();
       isUserLoggedIn = false;
     }

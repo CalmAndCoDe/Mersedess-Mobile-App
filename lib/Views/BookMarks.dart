@@ -7,6 +7,7 @@ import 'package:mobile_app/Bloc/Rooms.dart';
 import 'package:mobile_app/Elements/Button.dart';
 import 'package:mobile_app/Elements/Custombutton.dart';
 import 'package:mobile_app/Functions/IconRating.dart';
+import 'package:mobile_app/Functions/TextStyles.dart';
 
 class Bookmarks extends StatefulWidget {
   @override
@@ -55,10 +56,7 @@ class _BookmarksState extends State<Bookmarks> {
                   ),
                   Text(
                     'Yoo, go and reserve some room :)',
-                    style: TextStyle(
-                        color: Theme.of(context).textTheme.body1.color,
-                        fontFamily: 'Open Sans Condensed',
-                        fontWeight: FontWeight.bold),
+                    style: settingButtonStyle
                   )
                 ]),
               ),
@@ -98,17 +96,12 @@ class _BookmarksState extends State<Bookmarks> {
                 children: <Widget>[
                   Text(
                     title,
-                    style: TextStyle(
-                        fontFamily: 'Open Sans Condensed',
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
+                    style: titleStyle,
                   ),
                   IconRate().rate(context, rooms, 14),
                   Text(
                     'Rooms: ${rooms}',
-                    style: TextStyle(
-                      fontFamily: 'Open Sans Condensed',
-                    ),
+                    style: defaultStyle
                   ),
                   Row(
                     children: <Widget>[

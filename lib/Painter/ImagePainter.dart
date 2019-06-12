@@ -18,7 +18,7 @@ class ImagePainter extends CustomPainter {
               ((size.width / 2) + (xCoordinate * 800.0)).clamp(0.0, (width / 2)),
               0,
               size.width,
-              size.height - 50),
+              size.height),
           Rect.fromLTWH(0, 0, size.width, size.height),
           Paint()..color = Colors.blue);
     } else {
